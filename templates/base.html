@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<style>
+    img {
+        height: 200px;
+        width: 300px;
+    }
+    .imgDiv p{
+        font-size: 0.8rem;
+    }
+    .imgDiv h5{
+        font-size: 1.5rem;
+    }
+</style>
+
+<body>
+    <div class="container-fluid bg-dark p-2 d-flex justify-content-around">
+            <a  href="{% url 'productsHome:home' %}" class="btn btn-info my-2">Home</a>
+        <h1 class="text-center font-weight-light text-white">Products Page</h1>
+        <button class=" btn btn-sm btn btn-outline-info my-2">View-Dashboard</button>
+    </div>
+    {% block content %}
+    {% endblock content %}

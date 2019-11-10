@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+</body>
+<div class="container">
+    <h2 class="text-center mt-3">{{product.title}}</h2>
+    <hr>
+    <div class="continer-fluid mt-3 text-center">
+        <img  class = "border border-dark "style="
+                height: 400px;
+                width: 600px;" src="{{product.image.url}}" alt="">
+        <h5 class="text-center mt-3 ">{{product.description}}</h5>
+    </div>
+</div>  
+</html>
+{% endblock content %}
