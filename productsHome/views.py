@@ -34,24 +34,16 @@ def makeY():
     x0.Y = Y_array
     x0.save()
 
-    # print(x[0].Y)
-
-
-def minutesFromMidnight():
-    now = datetime.datetime.now()
-    midnight = now.replace(hour=0, minute=0, second=0, microsecond=0)
-    seconds = (now - midnight).seconds
-    return seconds/60
-
 
 def home(request):
-    # global flag
     products = Products.objects.all()
     views = Views.objects.all()
 
     # caculate Days
     delta = (datetime.date.today()-products[0].dateUploaded)
     if delta.days == 0:
+        if views[0].X == [0]*10:
+            makeX()
         Day = 1
     else:
         Day = delta.days + 1
@@ -65,22 +57,14 @@ def home(request):
 
     # give minutes passed since last update
     delta = datetime.datetime.now(timezone.utc) - views[0].Viewtimestamp
-    # print("now",datetime.datetime.now(timezone.utc))
-    # print("view",views[0].Viewtimestamp)
-    print("Seconds passed", delta.seconds)
-    # if (delta.seconds)/60 >= 1:
-    # print("view:before",views[0].Viewtimestamp)
     v0 = views[0]
     v0.Viewtimestamp = datetime.datetime.now(timezone.utc)
     v0.save()
-    # print("view:after",views[0].Viewtimestamp)
     minutes_passed = (delta.seconds)/60
 
     for product in products:
         DummyView = Day * views[0].X[product.id-1] * views[0].Y[product.id-1]
         DummyViewPerMinute = (DummyView/(24*60))
-        print("DummyViewsPerMinute", (DummyViewPerMinute) * minutes_passed)
-        # print("minutes passed",delta.seconds/60)
         product.views += (minutes_passed * DummyViewPerMinute)
         product.save()
         print("product views",product.views)
@@ -90,5 +74,25 @@ def home(request):
 def productView(request, product_id):
     product = Products.objects.get(pk=product_id)
     product.views += 1
+    product.actualViews+=1
     product.save()
     return render(request, '../templates/productpage.html', {'product': product})
+
+
+def dashboard(request):
+    products = Products.objects.all()
+    views = Views.objects.all()
+    delta = (datetime.date.today()-products[0].dateUploaded)
+    if delta.days == 0:
+        Day = 1
+    else:
+        Day = delta.days + 1
+    
+    viewsDict = {}
+    for product in products:
+            DummyView = Day * views[0].X[product.id-1] * views[0].Y[product.id-1]
+            productName = product.title
+            actualView = product.actualViews
+            viewsDict[productName] = DummyView + actualView
+            
+    return render(request,'../templates/dashboard.html',{'viewsDict':viewsDict})
