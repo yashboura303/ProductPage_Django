@@ -19,13 +19,16 @@
     .imgDiv h5{
         font-size: 1.5rem;
     }
+    .small{
+        font-size: 0.65rem;
+    }
 </style>
 
 <body>
-    <div class="container-fluid bg-dark p-2 d-flex justify-content-around">
-            <a  href="{% url 'productsHome:home' %}" class="btn btn-info my-2">Home</a>
-        <h1 class="text-center font-weight-light text-white">Products Page</h1>
-        <button class=" btn btn-sm btn btn-outline-info my-2">View-Dashboard</button>
+    <div class="container-fluid bg-dark p-2 d-flex justify-content-around text-center">
+            <a  href="{% url 'productsHome:home' %}" class="btn btn-info my-3">Home</a>
+        <h1 class=" font-weight-light text-white">Products Page</h1>
+        <a href="{% url 'productsHome:dashboard' %}" class=" btn btn-sm btn btn-outline-info my-3">View-Dashboard</a>
     </div>
     {% block content %}
     {% endblock content %}
