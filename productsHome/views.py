@@ -7,6 +7,7 @@ import datetime
 import decimal
 
 
+# pick random Y with probabilty of 0.4, 0.3, 0.2, 0.1 in each set between [1.00,2.00)
 def pick_randomY():
     randoms = [random.uniform(1.0, 1.49), random.uniform(
         1.4, 1.69), random.uniform(1.7, 1.89), random.uniform(1.9, 1.99)]
@@ -14,6 +15,7 @@ def pick_randomY():
     return round(random.choices(randoms, weights=weights)[0], 2)
 
 
+# pick any value betweeen 1-100 with probablity 1/100 and make X array
 def makeX():
     X_array = []
     for i in range(10):
@@ -24,7 +26,7 @@ def makeX():
     x0.X = X_array
     x0.save()
 
-
+# make Y array using pick_randomY()
 def makeY():
     Y_array = []
     for i in range(10):
@@ -39,7 +41,7 @@ def home(request):
     products = Products.objects.all()
     views = Views.objects.all()
 
-    # caculate Days
+    # caculate Day (N)
     delta = (datetime.date.today()-products[0].dateUploaded)
     if delta.days == 0:
         if views[0].X == [0]*10:
@@ -48,6 +50,7 @@ def home(request):
     else:
         Day = delta.days + 1
 
+
     # if next day then change Y
     if datetime.date.today() != products[0].Daytimestamp:
         makeY()
@@ -55,7 +58,8 @@ def home(request):
             product.Daytimestamp = datetime.date.today()
             product.save()
 
-    # give minutes passed since last update
+
+    # give minutes passed since last update in views
     delta = datetime.datetime.now(timezone.utc) - views[0].Viewtimestamp
     v0 = views[0]
     v0.Viewtimestamp = datetime.datetime.now(timezone.utc)
@@ -63,15 +67,17 @@ def home(request):
     minutes_passed = (delta.seconds)/60
 
     for product in products:
+
+        # D = N * X * Y
         DummyView = Day * views[0].X[product.id-1] * views[0].Y[product.id-1]
         DummyViewPerMinute = (DummyView/(24*60))
         product.views += (minutes_passed * DummyViewPerMinute)
         product.save()
-        print("product views",product.views)
     return render(request, '../templates/home.html', {'Products': products})
 
 
 def productView(request, product_id):
+    # increase view if user visits a product
     product = Products.objects.get(pk=product_id)
     product.views += 1
     product.actualViews+=1
@@ -82,6 +88,8 @@ def productView(request, product_id):
 def dashboard(request):
     products = Products.objects.all()
     views = Views.objects.all()
+
+    # caculate Day (N)
     delta = (datetime.date.today()-products[0].dateUploaded)
     if delta.days == 0:
         Day = 1
@@ -90,6 +98,8 @@ def dashboard(request):
     
     viewsDict = {}
     for product in products:
+
+            # D = N * X * Y
             DummyView = Day * views[0].X[product.id-1] * views[0].Y[product.id-1]
             productName = product.title
             actualView = product.actualViews
