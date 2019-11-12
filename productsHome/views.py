@@ -68,7 +68,7 @@ def home(request):
         product.views += (minutes_passed * DummyViewPerMinute)
         product.save()
         print("product views",product.views)
-    return render(request, '../templates/home.html', {'Products': products})
+    return render(request, '../templates/home.html', {'Products': Products})
 
 
 def productView(request, product_id):
