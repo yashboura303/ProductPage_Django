@@ -8,7 +8,7 @@
                 <img src="{{product.image.url}}" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">{{product.title}}</h5>
-                    <p class="text-left font-weight-lighter">Views {{product.views|floatformat:"0" }}</p>
+                    <p class="text-left font-weight-lighter">Views {{product.views }}</p>
                     <a href="{% url 'productsHome:productView' product.id%}" class=" container btn btn-primary">View</a>
                 </div>
             </div>
