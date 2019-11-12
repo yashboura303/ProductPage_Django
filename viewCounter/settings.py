@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'k8o)qi5vy&4_luta0+l8gpw!6&vz6s8wsd%zrldjfkk77(u68c'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -138,3 +139,12 @@ MEDIA_URL = '/media/'
 
 
 django_heroku.settings(locals())
+
+AWS_ACCESS_KEY_ID = " AKIA4I5RCDUAQRMJ5UY7"
+AWS_SECRET_ACCESS_KEY = "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"
+AWS_STORAGE_BUCKET_NAME = "django-viewcounter"
+
+AWS_DEFAULT_ACL = None
+AWS_S3_FILE_OVERWRITE = False
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
